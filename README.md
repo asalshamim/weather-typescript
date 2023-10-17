@@ -1,3 +1,3 @@
 ## The Weather Project" with ReactJS, TypeScript, Fetch, and TailwindCSS
 
-##### The Weather Project is an engaging and educational web application that allows users to access real-time weather data for any location. In this project, we'll explore how to create this application using popular web development technologies: ReactJS, TypeScript, Fetch for API data retrieval, and TailwindCSS for modern and responsive design.
+##### The Weather Project is an engaging web application that allows users to access real-time weather data for any location. In this project, we'll explore how to create this application using popular web development technologies: ReactJS, TypeScript, Fetch for API data retrieval, and TailwindCSS for modern and responsive design.
