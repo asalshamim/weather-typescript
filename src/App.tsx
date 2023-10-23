@@ -1,17 +1,18 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 
 import { optionType } from "./types";
 
 const App = (): JSX.Element => {
   const [term, setTerm] = useState<string>('');
-  const[options, seOptions] = useState<[]>([])
+  const [city, setCity] = useState<optionType | null>(null)
+  const[options, setOptions] = useState<[]>([])
 
   const getSearchOption = (value: string) => {
     fetch(
       `http://api.openweathermap.org/geo/1.0/direct?q=${value.trim()}&limit=5&appid=${process.env.REACT_APP_API_KEY}`
     )
       .then(res => res.json())
-      .then((data) => seOptions(data))
+      .then((data) => setOptions(data))
   
   }
 
@@ -26,18 +27,35 @@ const App = (): JSX.Element => {
 
 
   }
-
-  const onOptionSelect = (option: optionType) => {
-    console.log(option.name)
-
+  const getForecast = (city: optionType) => {
     fetch(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${option.lat}&lon=${option.lon}&units=metric&appid=${process.env.REACT_APP_API_KE}`)
+      `https://api.openweathermap.org/data/2.5/weather?lat=${city.lat}&lon=${city.lon}&units=metric&appid=${process.env.REACT_APP_API_KE}`)
       .then(res => res.json()).then(data => console.log({data}))
     
   }
 
+  const onSubmit = () => {
+    if (!city) return
+    
+    getForecast(city)
+  }
 
-  // http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}
+  const onOptionSelect = (option: optionType) => {
+    setCity(option)
+    
+
+    
+    
+  }
+
+
+  useEffect(() => {
+  
+    if (city) {
+      setTerm(city.name)
+      setOptions([])
+    }
+}, [city])
 
   return (
     <main className="flex justify-center items-center bg-gradient-to-br from-sky-500 via-rose-200 to-green-200 h-[100vh] w-full">
@@ -74,7 +92,8 @@ const App = (): JSX.Element => {
            ))}
              </ul>
 
-        <button className="rounded-r-md border-2 border-zinc-500 hover:border-zinc-500 text-zinc-700 hover:text-zinc-500 px-2 py-1 cursor-pointer">
+          <button className="rounded-r-md border-2 border-zinc-500 hover:border-zinc-500 text-zinc-700 hover:text-zinc-500 px-2 py-1 cursor-pointer"
+            onClick={onSubmit}>
           Search
           </button>
           </div>
